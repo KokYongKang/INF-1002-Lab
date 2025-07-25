@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./app
+    container_name: webapp
+    ports:
+      - "80:3000"
+    networks:
+      - localnet
+
+  gogs:
+    image: gogs/gogs:latest
+    container_name: gogs-server
+    ports:
+      - "3001:3000" # Web UI
+      - "10022:22" # SSH Git access
+    volumes:
+      - gogs-data:/data
+    networks:
+      - localnet
+
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    environment:
+      - SONARQUBE_JDBC_USERNAME=admin
+      - SONARQUBE_JDBC_PASSWORD=2301958@SIT.singaporetech.edu.sg
+    ports:
+      - "9000:9000"
+    networks:
+      - localnet
+
+networks:
+  localnet:
+
+
+volumes:
+  gogs-data:
